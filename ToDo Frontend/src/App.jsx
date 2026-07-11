@@ -1,11 +1,14 @@
 import { useEffect, useState } from 'react'
-import './App.css'
 import { Outlet, useLocation } from 'react-router-dom';
 import AppName from './components/AppName/AppName';
 import AddTodoInput from './components/AddToDoInput/AddTodoInput';
 import WelcomeMessage from './components/WelcomeMessage/WelcomeMessage';
 import TodoItems from './components/ToDoItems/TodoItems';
-import { deleteItemFromServer, getItemsFromServer, markCompletedOnServer, postNewItemToServer } from './services/itemsService';
+import { deleteItemFromServer, getItemsFromServer, markCompletedOnServer, postNewItemToServer } from './services/ItemsService';
+import Navbar from './components/Layout/Navbar/Navbar';
+
+// import { useContext } from 'react';
+// import { AppContext } from './contexts/AppContext';
 
 function App() {
   const [todoItems, setTodoItems] = useState([]);
@@ -43,7 +46,6 @@ function App() {
   };
 
   const handleToggleComplete = async (id) => {
-    console.log("Your updating id is: ", id);
     await markCompletedOnServer(id);
     // Find the item and toggle its completed status
     const updatedItems = todoItems.map((item) => {
@@ -62,22 +64,25 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-r from-purple-100 to-blue-100 py-12 px-4">
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-white rounded-xl shadow-lg overflow-hidden mb-8">
-          <div className="p-8">
-            <AppName />
-            <AddTodoInput onNewItem={handleNewItem} />
-            {todoItems.length === 0 && <WelcomeMessage />}
-            <TodoItems
-              todoItems={sortedItems}
-              onDeleteClick={handleDeleteItem}
-              toggleComplete={handleToggleComplete}
-            ></TodoItems>
+    <>
+      <Navbar />
+      <div className="min-h-screen bg-linear-to-r from-purple-100 to-blue-100 py-12 px-4">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="bg-white rounded-xl shadow-lg overflow-hidden mb-8">
+            <div className="p-8">
+              <AppName />
+              <AddTodoInput onNewItem={handleNewItem} />
+              {todoItems.length === 0 && <WelcomeMessage />}
+              <TodoItems
+                todoItems={sortedItems}
+                onDeleteClick={handleDeleteItem}
+                toggleComplete={handleToggleComplete}
+              ></TodoItems>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 
