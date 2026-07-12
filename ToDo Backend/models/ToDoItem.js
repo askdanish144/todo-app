@@ -13,11 +13,11 @@ const toDoItemSchema = mongoose.Schema({
     type: Boolean,
     default: false,
   },
-//   userID: {
-//     type: mongoose.Schema.Types.ObjectId,
-//     ref: "User",
-//     required: true,
-//   },
+  userID: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
 });
 
 module.exports = mongoose.model("ToDoItem", toDoItemSchema);

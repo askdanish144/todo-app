@@ -80,3 +80,22 @@ export const handleSignOut = async (setIsLoggedIn, setUser) => {
         throw err;
     }
 };
+
+export const checkAuth = async () => {
+    try {
+        const response = await fetch(`${PORT}/api/auth/auth-status`, {
+            credentials: 'include',
+        });
+
+        const result = await response.json();
+
+        if (!response.ok) {
+            throw new Error(result.message || 'Authentication failed.');
+        }
+
+        return result;
+    } catch (err) {
+        console.err("Service error: ", err);
+        throw err;
+    }
+}

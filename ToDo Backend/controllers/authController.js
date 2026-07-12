@@ -121,9 +121,7 @@ exports.postSignin = async (req, res, next) => {
   });
 };
 
-
 exports.postSignOut = (req, res, next) => {
-  console.log(req.session); 
   req.session.destroy((err) => {
     if (err) {
       return res.status(500).json({
@@ -137,4 +135,45 @@ exports.postSignOut = (req, res, next) => {
       .status(200)
       .json({ success: true, message: "Logged out successfully" });
   });
+};
+
+exports.getAuthStatus = async (req, res, next) => {
+  try {
+    // User is not logged in
+    if (!req.session.isLoggedIn) {
+      return res.status(200).json({
+        success: false,
+        message: "Session expired or doesn't exist.",
+        user: null,
+      });
+    }
+
+    // Get latest user data from DB
+    const user = await User.findById(req.session.userID);
+
+    // Session exists but user deleted
+    if (!user) {
+      req.session.destroy(() => {});
+      return res.status(200).json({
+        success: false,
+        message: "User not found.",
+        user: null,
+      });
+    }
+
+    // User is logged in
+    if (req.session.isLoggedIn) {
+      res.status(200).json({
+        success: true,
+        isLoggedIn: true,
+        user: {
+          id: user._id,
+          name: user.name,
+          email: user.email,
+        },
+      });
+    }
+  } catch (err) {
+    next(err);
+  }
 };

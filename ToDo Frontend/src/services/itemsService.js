@@ -1,5 +1,5 @@
-// const PORT = "http://localhost:3001";
-const PORT = "http://192.168.0.108:3001";
+const PORT = "http://localhost:3001";
+// const PORT = "http://192.168.0.108:3001";
 
 const mapServerItemsToLocalItems = (serverItem) => {
   return {
@@ -12,10 +12,14 @@ const mapServerItemsToLocalItems = (serverItem) => {
 
 export const getItemsFromServer = async () => {
   try {
-    const response = await fetch(`${PORT}/api/get-todo-items`);
+    const response = await fetch(`${PORT}/api/get-todo-items`, {
+      credentials: 'include'
+    });
+
     if (!response.ok) {
       throw new Error("Server error: ", response.status);
     }
+
     let result = await response.json();
     result = result.map(item => mapServerItemsToLocalItems(item));
     return result;
@@ -29,10 +33,9 @@ export const postNewItemToServer = async (todo, date, completed = false) => {
   try {
     const response = await fetch(`${PORT}/api/post-todo-item`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: {"Content-Type": "application/json",},
       body: JSON.stringify({ todo, date, completed }),
+      credentials: 'include'
     });
     if (!response.ok) {
       throw new Error("Server error: ", response.status);
@@ -49,6 +52,7 @@ export const markCompletedOnServer = async (id) => {
   try {
     const response = await fetch(`${PORT}/api/complete/${id}`, {
       method: "PUT",
+      credentials: 'include'
     });
     if (!response.ok) {
       throw new Error("Server error: ", response.status);
@@ -64,6 +68,7 @@ export const deleteItemFromServer = async (id) => {
   try {
     const response = await fetch(`${PORT}/api/delete-item/${id}`, {
       method: "DELETE",
+      credentials: 'include'
     });
     if (!response.ok) {
       throw new Error(`Server error: ${response.status}`);
