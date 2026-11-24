@@ -15,9 +15,7 @@ function App() {
 
   useEffect(() => {
     getItemsFromServer()
-      .then((initialItems) => {
-        setTodoItems(initialItems);
-      });
+      .then((initialItems) => {setTodoItems(initialItems)});
   }, []);
 
   const handleNewItem = async (todo, date) => {

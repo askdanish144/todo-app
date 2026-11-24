@@ -59,7 +59,6 @@ exports.deleteToDoItem = async (req, res, next) => {
 exports.markCompleted = async (req, res, next) => {
   try {
     const { id } = req.params;
-    // const todoitem = await ToDoItem.findById(id);
     const todoitem = await ToDoItem.findOneAndUpdate({
       _id: id,
       userID: req.session.userID,

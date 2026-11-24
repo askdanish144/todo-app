@@ -131,9 +131,10 @@ exports.postSignOut = (req, res, next) => {
     }
 
     res.clearCookie("connect.sid");
-    return res
-      .status(200)
-      .json({ success: true, message: "Logged out successfully" });
+    return res.status(200).json({
+      success: true,
+      message: "Logged out successfully",
+    });
   });
 };
 

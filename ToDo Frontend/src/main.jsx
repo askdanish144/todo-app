@@ -6,10 +6,6 @@ import { router } from './routes/router.jsx';
 import { RouterProvider } from 'react-router-dom';
 import AppContextProvider from './contexts/AppContext.jsx';
 
-
-
-
-
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <AppContextProvider>
